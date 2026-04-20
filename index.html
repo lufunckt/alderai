@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="background">
+    <span class="orb orb-a"></span>
+    <span class="orb orb-b"></span>
+    <span class="orb orb-c"></span>
+  </div>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <p class="eyebrow">Controle simples</p>
+        <h1>OTC</h1>
+        <p class="muted">Uma pagina leve para acompanhar clientes, saldo devedor e o quanto cada um ja pagou.</p>
+      </div>
+
+      <div class="sidebar-tools">
+        <label class="label" for="clientSearch">Buscar cliente</label>
+        <input id="clientSearch" type="search" placeholder="Digite o nome do cliente">
+        <button id="newClientBtn" class="btn btn-primary" type="button">Novo cliente</button>
+      </div>
+
+      <div class="sidebar-group">
+        <div class="section-heading">
+          <h2>Clientes</h2>
+          <span id="clientCountBadge" class="badge">0</span>
+        </div>
+        <div id="clientList" class="client-list"></div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button id="resetDataBtn" class="btn btn-ghost" type="button">Resetar dados</button>
+        <p class="caption">Tudo fica salvo localmente no navegador.</p>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Dashboard OTC</p>
+          <h2>Cliente, data, saldo devedor e pago. So isso.</h2>
+          <p class="muted">Sem login, sem etapas extras, sem burocracia. Apenas um painel bonito e organizado.</p>
+        </div>
+
+        <div class="hero-side">
+          <div id="statsBand" class="stats-band"></div>
+
+          <div class="board-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Saldo a receber</p>
+                <h3>Mural OTC</h3>
+              </div>
+            </div>
+            <div id="receivableBoard" class="receivable-board"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="column column-wide">
+          <article id="clientSpotlight" class="spotlight"></article>
+
+          <section class="records-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Registros</p>
+                <h3>Datas e saldos</h3>
+              </div>
+
+              <div class="filter-row">
+                <button class="filter-chip active" data-filter="all" type="button">Todos</button>
+                <button class="filter-chip" data-filter="pending" type="button">Pendentes</button>
+                <button class="filter-chip" data-filter="paid" type="button">Pagos</button>
+              </div>
+            </div>
+            <div id="recordList" class="record-list"></div>
+          </section>
+        </div>
+
+        <div class="column column-side">
+          <section id="clientEditor" class="editor-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Cliente</p>
+                <h3 id="clientFormTitle">Novo cliente</h3>
+              </div>
+              <button id="clearClientFormBtn" class="btn btn-ghost" type="button">Limpar</button>
+            </div>
+
+            <form id="clientForm" class="form-stack">
+              <input id="clientId" type="hidden">
+
+              <label class="field">
+                <span>Nome do cliente</span>
+                <input id="clientName" type="text" placeholder="Ex.: Studio Aurora" required>
+              </label>
+
+              <div class="actions">
+                <button class="btn btn-primary" type="submit">Salvar cliente</button>
+                <button id="deleteClientBtn" class="btn btn-danger" type="button">Excluir</button>
+              </div>
+            </form>
+          </section>
+
+          <section id="recordEditor" class="editor-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Saldo devedor</p>
+                <h3 id="recordFormTitle">Novo registro</h3>
+              </div>
+              <button id="clearRecordFormBtn" class="btn btn-ghost" type="button">Limpar</button>
+            </div>
+
+            <form id="recordForm" class="form-stack">
+              <input id="recordId" type="hidden">
+
+              <div class="grid two">
+                <label class="field">
+                  <span>Data</span>
+                  <input id="recordDate" type="date" required>
+                </label>
+
+                <label class="field">
+                  <span>Saldo devedor</span>
+                  <input id="recordValue" type="number" min="0" step="0.01" placeholder="0,00" required>
+                </label>
+              </div>
+
+              <label class="field check-field">
+                <span>Pago</span>
+                <input id="recordPaid" type="checkbox">
+              </label>
+
+              <div class="actions">
+                <button class="btn btn-primary" type="submit">Salvar registro</button>
+                <button id="deleteRecordBtn" class="btn btn-danger" type="button">Excluir</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-dock" aria-label="Atalhos mobile">
+    <button id="dockHomeBtn" class="dock-btn dock-btn-active" type="button">Painel</button>
+    <button id="dockClientBtn" class="dock-btn" type="button">Cliente</button>
+    <button id="dockRecordBtn" class="dock-btn" type="button">Saldo</button>
+    <button id="dockResetBtn" class="dock-btn" type="button">Resetar</button>
+  </nav>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
