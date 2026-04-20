@@ -1,166 +1,1900 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OTC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <title>Atlas de Negocios</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root{
+    --bg:#f4f4f6;
+    --bg-2:#f8f7fb;
+    --surface:#ffffff;
+    --surface-2:#f7f7fa;
+    --surface-3:#f1f3f8;
+    --ink:#121826;
+    --muted:#6b7280;
+    --line:rgba(17,24,39,.07);
+    --line-strong:rgba(17,24,39,.12);
+
+    --sidebar:#0f172a;
+    --sidebar-2:#111827;
+    --sidebar-text:rgba(255,255,255,.86);
+    --sidebar-soft:rgba(255,255,255,.08);
+
+    --accent:#ff7a7a;
+    --accent-2:#ff5fa2;
+    --accent-3:#f06292;
+    --blue:#5b7cfa;
+    --pink-soft:#fde6ea;
+    --peach:#f7c6b1;
+    --lilac:#ddd6fe;
+    --navy:#1e293b;
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+
+    --radius-xl:30px;
+    --radius-lg:24px;
+    --radius-md:18px;
+    --radius-sm:14px;
+    --radius-pill:999px;
+
+    --shadow-lg:0 18px 50px rgba(15,23,42,.08);
+    --shadow-md:0 10px 30px rgba(15,23,42,.06);
+    --shadow-sm:0 6px 18px rgba(15,23,42,.05);
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    min-height:100%;
+    font-family:"Manrope",sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 0% 0%, rgba(91,124,250,.08), transparent 24%),
+      radial-gradient(circle at 100% 0%, rgba(255,95,162,.08), transparent 22%),
+      radial-gradient(circle at 100% 100%, rgba(240,98,146,.06), transparent 24%),
+      linear-gradient(180deg,#f6f5f8 0%, #f2f4f8 100%);
+  }
+
+  html{
+    -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
+    scroll-behavior:smooth;
+  }
+
+  body{
+    overscroll-behavior-y:none;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(255,255,255,.55), transparent 16%),
+      radial-gradient(circle at 84% 78%, rgba(199,184,255,.18), transparent 18%);
+  }
+
+  button,input,textarea,select{font:inherit}
+  button{
+    cursor:pointer;
+    border:0;
+    background:none;
+    color:inherit;
+  }
+
+  input,textarea,select{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:rgba(255,255,255,.96);
+    color:var(--ink);
+    padding:14px 16px;
+    font-size:14px;
+    transition:.2s ease;
+    outline:none;
+  }
+
+  input:focus,textarea:focus,select:focus{
+    border-color:rgba(255,95,162,.35);
+    box-shadow:0 0 0 4px rgba(255,95,162,.09);
+    background:#fff;
+    transform:translateY(-1px);
+  }
+
+  textarea{
+    min-height:180px;
+    resize:vertical;
+    line-height:1.6;
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns:248px 1fr;
+    gap:24px;
+    min-height:100vh;
+    padding:24px;
+  }
+
+  .side,
+  .panel,
+  .hero,
+  .kanban-col,
+  .plan-card,
+  .metric,
+  .list-item{
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-md);
+  }
+
+  .side{
+    position:sticky;
+    top:24px;
+    height:calc(100vh - 48px);
+    padding:18px;
+    border-radius:32px;
+    background:linear-gradient(180deg,var(--sidebar) 0%, var(--sidebar-2) 100%);
+    color:var(--sidebar-text);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    overflow:hidden;
+  }
+
+  .side::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,.09), transparent 26%),
+      radial-gradient(circle at 50% 100%, rgba(91,124,250,.16), transparent 30%);
+    pointer-events:none;
+  }
+
+  .side > *{
+    position:relative;
+    z-index:1;
+  }
+
+  .brand{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    align-items:center;
+    gap:10px;
+    text-align:left;
+  }
+
+  .mark{
+    width:54px;
+    height:54px;
+    border-radius:18px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#ff8c7a 0%, #ff5fa2 58%, #f06292 100%);
+    font:800 1.2rem "Syne",sans-serif;
+    color:#fff;
+    box-shadow:0 14px 28px rgba(240,98,146,.28);
+  }
+
+  .eyebrow{
+    margin:0 0 4px;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    font-size:11px;
+    font-weight:700;
+    opacity:.7;
+  }
+
+  .brand h1,
+  .hero h1,
+  .section-title,
+  .metric strong,
+  .hero-panel strong{
+    font-family:"Syne",sans-serif;
+  }
+
+  .brand h1{
+    margin:0;
+    font-size:15px;
+    line-height:1.2;
+    max-width:none;
+  }
+
+  .side-note{
+    margin:0;
+    font-size:12px;
+    line-height:1.45;
+    color:rgba(255,255,255,.62);
+    text-align:left;
+  }
+
+  .brand p,
+  .section-copy,
+  .list-item small{
+    margin:0;
+    line-height:1.55;
+  }
+
+  .btn,.ghost,.tiny,.view{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border-radius:999px;
+    transition:.18s ease;
+    white-space:nowrap;
+  }
+
+  .btn:hover,.ghost:hover,.tiny:hover,.view:hover,.icon:hover,.front-main:hover{
+    transform:translateY(-1px);
+  }
+
+  .btn{
+    min-height:42px;
+    padding:0 18px;
+    background:#111827;
+    color:#fff;
+    font-weight:800;
+    box-shadow:var(--shadow-sm);
+  }
+
+  .ghost{
+    min-height:42px;
+    padding:0 14px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    color:#fff;
+    backdrop-filter:blur(8px);
+  }
+
+  .tiny{
+    min-height:42px;
+    padding:0 14px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .fronts{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    overflow:auto;
+  }
+
+  .front{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    align-items:start;
+  }
+
+  .front-main{
+    position:relative;
+    width:100%;
+    min-height:76px;
+    padding:14px 14px 14px 16px;
+    border-radius:18px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.06);
+    text-align:left;
+    overflow:hidden;
+  }
+
+  .front-main::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:10px;
+    bottom:10px;
+    width:4px;
+    border-radius:999px;
+    background:rgba(255,255,255,.16);
+  }
+
+  .front-main.active{
+    background:linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
+    border-color:rgba(255,255,255,.16);
+    box-shadow:0 12px 24px rgba(0,0,0,.18);
+  }
+
+  .front-main.active::before{
+    background:linear-gradient(180deg,#ff8b7d,#ff5fa2);
+  }
+
+  .front-name{
+    display:block;
+    font-weight:800;
+    color:#fff;
+    font-size:13px;
+    line-height:1.25;
+  }
+
+  .front-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:6px;
+    font-size:11px;
+    color:rgba(255,255,255,.64);
+  }
+
+  .front-kill,
+  .icon{
+    width:38px;
+    height:38px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:#fff;
+    border:1px solid var(--line);
+    color:var(--ink);
+    box-shadow:var(--shadow-sm);
+    flex-shrink:0;
+  }
+
+  .save{
+    margin-top:auto;
+    padding:10px 12px;
+    border-radius:18px;
+    background:rgba(255,255,255,.06);
+    display:flex;
+    flex-direction:row;
+    gap:10px;
+    align-items:center;
+    text-align:left;
+    font-size:11px;
+    color:rgba(255,255,255,.7);
+  }
+
+  .side-actions,
+  .side-footer{
+    display:grid;
+    gap:12px;
+  }
+
+  .dot{
+    width:10px;
+    height:10px;
+    border-radius:999px;
+    background:#ff7a7a;
+    box-shadow:0 0 0 0 rgba(255,122,122,.4);
+    animation:pulse 2.6s infinite;
+  }
+
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,122,122,.4)}
+    70%{box-shadow:0 0 0 12px rgba(255,122,122,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,122,122,0)}
+  }
+
+  .main{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    min-width:0;
+  }
+
+  .hero{
+    padding:28px;
+    border-radius:30px;
+    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(248,249,252,.92));
+    position:relative;
+    overflow:hidden;
+  }
+
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(255,95,162,.08), transparent 22%),
+      radial-gradient(circle at 0% 100%, rgba(91,124,250,.08), transparent 20%);
+    pointer-events:none;
+  }
+
+  .hero-grid{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1.35fr .95fr;
+    gap:24px;
+    align-items:stretch;
+  }
+
+  .hero h1{
+    margin:2px 0 6px;
+    font-size:clamp(2.4rem,4vw,3.6rem);
+    line-height:.95;
+    letter-spacing:-.03em;
+  }
+
+  .hero-name{
+    padding:0;
+    border:0;
+    background:transparent;
+    font:inherit;
+    box-shadow:none;
+  }
+
+  .hero p{
+    max-width:680px;
+    margin:0;
+    color:var(--muted);
+    line-height:1.65;
+    font-size:14px;
+  }
+
+  .toolbar,.views,.summary,.meta,.planning,.panorama,.metrics,.modal-actions,.hero-side{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .hero-side{
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:space-between;
+  }
+
+  .view{
+    min-height:42px;
+    padding:0 16px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .view.active{
+    background:#111827;
+    border-color:#111827;
+    color:#fff;
+  }
+
+  .hero-panel{
+    display:grid;
+    gap:12px;
+    padding:18px;
+    border-radius:26px;
+    background:linear-gradient(135deg,#f97373 0%, #f06292 56%, #ec4899 100%);
+    color:#fff;
+    box-shadow:0 18px 36px rgba(240,98,146,.22);
+  }
+
+  .hero-panel .eyebrow{
+    color:rgba(255,255,255,.8);
+  }
+
+  .hero-panel strong{
+    display:block;
+    font-size:1.2rem;
+    line-height:1.05;
+  }
+
+  .hero-panel span{
+    display:block;
+    color:rgba(255,255,255,.9);
+    font-size:12px;
+    line-height:1.45;
+  }
+
+  .hero-panel-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .hero-mini{
+    padding:12px;
+    border-radius:18px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.16);
+    backdrop-filter:blur(8px);
+  }
+
+  .summary{
+    margin-top:20px;
+  }
+
+  .metric{
+    position:relative;
+    flex:1 1 170px;
+    padding:18px;
+    border-radius:24px;
+    background:#fff;
+    overflow:hidden;
+  }
+
+  .metric::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:16px;
+    bottom:16px;
+    width:4px;
+    border-radius:999px;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+  }
+
+  .metric label{
+    display:block;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .metric strong{
+    display:block;
+    margin-top:8px;
+    font-size:2rem;
+    line-height:1;
+    color:var(--ink);
+  }
+
+  .panel{
+    padding:22px;
+    border-radius:28px;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(10px);
+  }
+
+  .meta{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+
+  .field label{
+    display:block;
+    margin:0 0 8px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    color:var(--muted);
+    font-weight:800;
+  }
+
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+
+  .section-title{
+    margin:0;
+    font-size:1.24rem;
+    letter-spacing:-.02em;
+  }
+
+  .section-copy{
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .kanban{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:minmax(300px,1fr);
+    gap:18px;
+    overflow:auto;
+    padding-bottom:4px;
+  }
+
+  .kanban-col{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    min-height:560px;
+    padding:18px;
+    border-radius:28px;
+    background:linear-gradient(180deg,color-mix(in srgb,var(--column-color,#ff7a7a) 12%, white),#ffffff 22%, #fdfdff 100%);
+    transition:.18s ease;
+    overflow:hidden;
+    border-color:color-mix(in srgb,var(--column-color,#ff7a7a) 18%, rgba(17,24,39,.08));
+  }
+
+  .kanban-col::before{
+    content:"";
+    position:absolute;
+    left:14px;
+    right:14px;
+    top:0;
+    height:4px;
+    border-radius:999px;
+    background:var(--column-color,#ff7a7a);
+  }
+
+  .kanban-col.target{
+    border-color:color-mix(in srgb,var(--column-color,#ff7a7a) 55%, white);
+    transform:translateY(-2px);
+  }
+
+  .col-head{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns:1fr 50px auto auto auto;
+    gap:8px;
+    align-items:center;
+  }
+
+  .col-title{
+    font-weight:800;
+    background:#fff;
+  }
+
+  .col-color{
+    width:50px;
+    padding:4px;
+    min-height:46px;
+  }
+
+  .col-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:42px;
+    padding:0 12px;
+    height:40px;
+    border-radius:999px;
+    background:var(--surface-3);
+    font-size:12px;
+    font-weight:800;
+    color:var(--ink);
+    border:1px solid var(--line);
+  }
+
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    min-height:120px;
+  }
+
+  .empty{
+    padding:16px;
+    border-radius:18px;
+    border:1px dashed var(--line-strong);
+    color:#5f6776;
+    line-height:1.55;
+    background:rgba(255,255,255,.88);
+    font-size:14px;
+  }
+
+  .card{
+    position:relative;
+    display:grid;
+    gap:12px;
+    padding:16px 16px 16px 18px;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid rgba(17,24,39,.09);
+    cursor:grab;
+    transition:.18s ease;
+    box-shadow:0 10px 24px rgba(15,23,42,.07);
+  }
+
+  .card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:14px;
+    bottom:14px;
+    width:4px;
+    border-radius:999px;
+    background:var(--column-color,#ff7a7a);
+  }
+
+  .card:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-md);
+  }
+
+  .card.drag{
+    opacity:.48;
+    transform:rotate(1deg);
+  }
+
+  .card-top{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    align-items:start;
+  }
+
+  .card h3{
+    margin:0;
+    font-size:17px;
+    line-height:1.35;
+    max-width:19ch;
+  }
+
+  .card p{
+    margin:0;
+    color:#5f6776;
+    font-size:14px;
+    line-height:1.62;
+  }
+
+  .tags{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--surface-3);
+    color:var(--ink);
+    border:1px solid var(--line);
+    box-shadow:0 2px 6px rgba(15,23,42,.03);
+  }
+
+  .urgente{background:rgba(239,68,68,.09);color:#b91c1c;border-color:rgba(239,68,68,.14)}
+  .alta{background:rgba(245,158,11,.11);color:#b45309;border-color:rgba(245,158,11,.14)}
+  .normal{background:rgba(91,124,250,.1);color:#3152cf;border-color:rgba(91,124,250,.14)}
+  .baixa{background:rgba(34,197,94,.1);color:#15803d;border-color:rgba(34,197,94,.14)}
+
+  .planning{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+  }
+
+  .plan-card{
+    position:relative;
+    padding:18px;
+    border-radius:26px;
+    background:linear-gradient(180deg,#ffffff,#f8f9fc);
+    overflow:hidden;
+  }
+
+  .plan-card::before{
+    content:"";
+    position:absolute;
+    left:18px;
+    right:18px;
+    top:0;
+    height:4px;
+    border-radius:999px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--blue));
+  }
+
+  .plan-card::after{
+    content:"";
+    position:absolute;
+    right:-36px;
+    top:-36px;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(199,184,255,.22),transparent 68%);
+  }
+
+  .plan-card h3{
+    margin:0;
+    font:700 1.04rem "Syne",sans-serif;
+  }
+
+  .plan-card p{
+    margin:6px 0 0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  .plan-card textarea{
+    position:relative;
+    z-index:1;
+    margin-top:12px;
+    min-height:220px;
+  }
+
+  .panorama{
+    display:grid;
+    grid-template-columns:1.2fr .9fr;
+    gap:18px;
+  }
+
+  .stack{
+    display:grid;
+    gap:18px;
+  }
+
+  .list{
+    display:grid;
+    gap:12px;
+  }
+
+  .list-item{
+    padding:16px 18px;
+    border-radius:20px;
+    background:#fff;
+    box-shadow:var(--shadow-sm);
+  }
+
+  .list-item strong{
+    display:block;
+    font-size:14px;
+  }
+
+  .list-item small{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+  }
+
+  .library-shell{
+    display:grid;
+    grid-template-columns:minmax(280px,340px) minmax(0,1fr);
+    gap:18px;
+    align-items:start;
+  }
+
+  .upload-card{
+    display:grid;
+    gap:14px;
+    padding:18px;
+    border-radius:24px;
+    background:linear-gradient(180deg,#ffffff,#f8f9fc);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+
+  .upload-drop{
+    display:grid;
+    gap:10px;
+    padding:18px;
+    border-radius:22px;
+    border:1px dashed rgba(255,95,162,.25);
+    background:linear-gradient(180deg,rgba(255,95,162,.06),rgba(91,124,250,.04));
+  }
+
+  .upload-drop strong{
+    font-size:15px;
+  }
+
+  .upload-drop small,
+  .asset-meta{
+    color:var(--muted);
+    line-height:1.55;
+  }
+
+  .asset-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+  }
+
+  .asset-empty{
+    grid-column:1/-1;
+    padding:20px;
+    border-radius:22px;
+    border:1px dashed var(--line-strong);
+    background:rgba(255,255,255,.72);
+    color:var(--muted);
+    line-height:1.6;
+  }
+
+  .asset-card{
+    display:grid;
+    gap:14px;
+    padding:16px;
+    border-radius:22px;
+    background:#fff;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-sm);
+  }
+
+  .asset-preview{
+    display:grid;
+    place-items:center;
+    min-height:180px;
+    border-radius:18px;
+    overflow:hidden;
+    background:linear-gradient(135deg,#f8d8c6 0%,#f5e8f2 55%,#e1e8ff 100%);
+    border:1px solid rgba(17,24,39,.06);
+  }
+
+  .asset-preview img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    display:block;
+  }
+
+  .asset-file-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:88px;
+    min-height:88px;
+    padding:14px;
+    border-radius:26px;
+    background:rgba(255,255,255,.72);
+    font:800 .9rem "Syne",sans-serif;
+    color:var(--navy);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    box-shadow:var(--shadow-sm);
+  }
+
+  .asset-head{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  .asset-head h3{
+    margin:0;
+    font-size:15px;
+    line-height:1.35;
+  }
+
+  .asset-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .mobile-fab{
+    display:none;
+  }
+
+  .hidden{display:none}
+
+  .editor-shell{
+    display:grid;
+    gap:16px;
+    background:linear-gradient(180deg,#ffffff,#f8f9fc);
+    position:sticky;
+    top:24px;
+    z-index:6;
+    border-color:rgba(255,95,162,.14);
+    width:min(460px,100%);
+    margin-left:0;
+    padding:18px;
+    box-shadow:var(--shadow-lg);
+  }
+
+  .board-shell{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(360px,460px);
+    gap:18px;
+    align-items:start;
+  }
+
+  .editor-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+
+  .full{grid-column:1/-1}
+
+  .editor-shell textarea{
+    min-height:140px;
+  }
+
+  .editor-shell .section-head{
+    margin-bottom:4px;
+  }
+
+  .toast{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    padding:14px 16px;
+    border-radius:18px;
+    background:#111827;
+    color:#fff;
+    box-shadow:var(--shadow-lg);
+    opacity:0;
+    transform:translateY(14px);
+    pointer-events:none;
+    transition:.22s;
+    z-index:30;
+    font-size:13px;
+  }
+
+  .toast.show{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  @media (max-width:1180px){
+    .app{grid-template-columns:1fr}
+    .side{
+      position:relative;
+      top:0;
+      height:auto;
+      border-radius:28px;
+      padding:18px;
+    }
+    .side-actions{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      align-items:stretch;
+    }
+    .side-actions .btn,
+    .side-actions .ghost{
+      width:100%;
+    }
+    .side-footer{
+      grid-template-columns:minmax(0,1fr) auto;
+      align-items:center;
+    }
+    .brand{
+      justify-items:start;
+      text-align:left;
+      grid-template-columns:auto 1fr;
+      display:grid;
+      align-items:center;
+    }
+    .brand h1{max-width:none;font-size:1rem}
+    .side-note{text-align:left}
+    .front{grid-template-columns:1fr auto}
+    .fronts{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(220px,260px);
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding-bottom:6px;
+      align-items:start;
+    }
+    .editor-shell{
+      position:relative;
+      top:auto;
+      width:100%;
+      max-width:none;
+    }
+    .library-shell,
+    .hero-grid,.meta,.planning,.panorama,.board-shell{grid-template-columns:1fr}
+  }
+
+  @media (max-width:720px){
+    body{
+      padding-bottom:calc(92px + env(safe-area-inset-bottom, 0px));
+    }
+    .app{padding:12px;gap:12px}
+    .side,.hero,.panel{border-radius:24px}
+    .side{
+      padding:14px;
+      gap:12px;
+      border-radius:22px;
+    }
+    .mark{
+      width:44px;
+      height:44px;
+      border-radius:14px;
+    }
+    .brand{
+      gap:8px;
+    }
+    .brand h1{
+      font-size:.96rem;
+    }
+    .side-note,
+    .save{
+      display:none;
+    }
+    .side-actions{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:8px;
+    }
+    .side-actions .btn,
+    .side-actions .ghost{
+      min-height:40px;
+      padding:0 10px;
+      font-size:12px;
+      font-weight:800;
+    }
+    .side-footer{
+      display:none;
+    }
+    .fronts{
+      grid-auto-columns:minmax(190px,78vw);
+      gap:8px;
+      padding-bottom:2px;
+    }
+    .front-main{
+      min-height:74px;
+      padding:12px 12px 12px 14px;
+    }
+    .front-kill{
+      width:32px;
+      height:32px;
+      border-radius:11px;
+    }
+    .hero{padding:20px}
+    .panel{padding:18px}
+    .toolbar{
+      width:100%;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+    .toolbar .btn{
+      grid-column:1/-1;
+      width:100%;
+    }
+    .toolbar .tiny{
+      width:100%;
+      justify-content:center;
+    }
+    .views{
+      position:sticky;
+      top:calc(10px + env(safe-area-inset-top, 0px));
+      z-index:18;
+      display:flex;
+      flex-wrap:nowrap;
+      overflow:auto;
+      width:100%;
+      padding:6px;
+      gap:8px;
+      border-radius:20px;
+      background:rgba(255,255,255,.88);
+      border:1px solid rgba(17,24,39,.08);
+      backdrop-filter:blur(14px);
+      box-shadow:0 12px 28px rgba(15,23,42,.08);
+    }
+    .view{
+      flex:0 0 auto;
+      min-width:104px;
+      padding:0 14px;
+      font-size:13px;
+    }
+    .summary{gap:10px}
+    .metric{
+      min-width:calc(50% - 10px);
+      padding:16px;
+    }
+    .metric strong{
+      font-size:1.65rem;
+    }
+    .asset-grid{
+      grid-template-columns:1fr;
+    }
+    .kanban{
+      grid-auto-columns:minmax(260px,84vw);
+      gap:14px;
+    }
+    .kanban-col{
+      min-height:460px;
+      padding:16px;
+    }
+    .col-head{
+      grid-template-columns:minmax(0,1fr) 44px auto auto auto;
+    }
+    .card{
+      padding:15px 14px 15px 18px;
+    }
+    .card h3{
+      font-size:16px;
+      max-width:none;
+    }
+    .card p{
+      font-size:13px;
+    }
+    .meta{
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    .section-head{
+      align-items:flex-start;
+    }
+    .editor-grid{grid-template-columns:1fr}
+    .editor-shell{
+      position:fixed;
+      inset:auto 12px calc(12px + env(safe-area-inset-bottom, 0px)) 12px;
+      max-height:min(78vh,680px);
+      overflow:auto;
+      width:100%;
+      padding:16px;
+      border-radius:26px;
+      box-shadow:0 28px 60px rgba(15,23,42,.18);
+    }
+    .editor-shell textarea{
+      min-height:120px;
+    }
+    .modal-actions{
+      gap:10px;
+    }
+    .modal-actions .toolbar{
+      width:auto;
+      margin-left:0;
+    }
+    .hero-panel-grid{grid-template-columns:1fr 1fr}
+    .mobile-fab{
+      position:fixed;
+      left:12px;
+      right:12px;
+      bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+      z-index:35;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:54px;
+      padding:0 20px;
+      border-radius:999px;
+      background:#111827;
+      color:#fff;
+      font-weight:800;
+      box-shadow:0 18px 40px rgba(15,23,42,.22);
+    }
+    .toast{
+      right:12px;
+      left:12px;
+      bottom:82px;
+      text-align:center;
+    }
+  }
+
+  @media (max-width:560px){
+    .hero h1{
+      font-size:clamp(2rem,10vw,2.5rem);
+    }
+    .views,
+    .hero-panel-grid{
+      grid-template-columns:1fr;
+    }
+    .summary{
+      flex-direction:column;
+    }
+    .metric{
+      min-width:100%;
+    }
+    .kanban{
+      grid-auto-columns:minmax(240px,88vw);
+    }
+    .side{
+      padding:12px;
+    }
+    .side-actions{
+      grid-template-columns:1fr 1fr;
+    }
+    .side-actions .btn{
+      grid-column:1/-1;
+    }
+    .upload-card,
+    .asset-card{
+      padding:14px;
+    }
+    .col-head{
+      grid-template-columns:minmax(0,1fr) 44px auto auto;
+    }
+    .col-head .tiny:last-child{
+      grid-column:1/-1;
+      width:100%;
+    }
+    .modal-actions{
+      flex-direction:column;
+      align-items:stretch;
+    }
+    .modal-actions .toolbar{
+      width:100%;
+      margin-left:0;
+    }
+    .modal-actions .toolbar .ghost,
+    .modal-actions .toolbar .btn,
+    .modal-actions > .tiny{
+      width:100%;
+      justify-content:center;
+    }
+    .mobile-fab{
+      min-height:52px;
+      bottom:calc(12px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+  </style>
 </head>
 <body>
-  <div class="background">
-    <span class="orb orb-a"></span>
-    <span class="orb orb-b"></span>
-    <span class="orb orb-c"></span>
-  </div>
-
-  <div class="shell">
-    <aside class="sidebar">
-      <div class="brand-block">
-        <p class="eyebrow">Controle simples</p>
-        <h1>OTC</h1>
-        <p class="muted">Uma pagina leve para acompanhar clientes, saldo devedor e o quanto cada um ja pagou.</p>
-      </div>
-
-      <div class="sidebar-tools">
-        <label class="label" for="clientSearch">Buscar cliente</label>
-        <input id="clientSearch" type="search" placeholder="Digite o nome do cliente">
-        <button id="newClientBtn" class="btn btn-primary" type="button">Novo cliente</button>
-      </div>
-
-      <div class="sidebar-group">
-        <div class="section-heading">
-          <h2>Clientes</h2>
-          <span id="clientCountBadge" class="badge">0</span>
+  <div class="app">
+    <aside class="side">
+      <div class="brand">
+        <div class="mark">A</div>
+        <div>
+          <p class="eyebrow">Painel vivo</p>
+          <h1>Atlas de Negocios</h1>
         </div>
-        <div id="clientList" class="client-list"></div>
       </div>
-
-      <div class="sidebar-footer">
-        <button id="resetDataBtn" class="btn btn-ghost" type="button">Resetar dados</button>
-        <p class="caption">Tudo fica salvo localmente no navegador.</p>
+      <p class="side-note">Um Trello mais simples, com cara de mapa estrategico e autosave no navegador.</p>
+      <div class="side-actions">
+        <button id="add-front" class="btn">+ Nova frente</button>
+        <button id="export-json" class="ghost">Exportar JSON</button>
+        <button id="import-json" class="ghost">Importar backup</button>
+      </div>
+      <input id="import-file" type="file" accept=".json,application/json" class="hidden">
+      <div>
+        <p class="eyebrow">Frentes ativas</p>
+        <div id="fronts" class="fronts"></div>
+      </div>
+      <div class="side-footer">
+        <div class="save">
+          <span class="dot"></span>
+          <span id="save-text">Salvo localmente no navegador.</span>
+        </div>
+        <button id="reset-all" class="ghost">Resetar tudo</button>
       </div>
     </aside>
 
-    <main class="main-panel">
+    <main class="main">
       <section class="hero">
-        <div>
-          <p class="eyebrow">Dashboard OTC</p>
-          <h2>Cliente, data, saldo devedor e pago. So isso.</h2>
-          <p class="muted">Sem login, sem etapas extras, sem burocracia. Apenas um painel bonito e organizado.</p>
-        </div>
-
-        <div class="hero-side">
-          <div id="statsBand" class="stats-band"></div>
-
-          <div class="board-panel">
-            <div class="section-heading">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow" style="color:rgba(24,20,16,.5)">Frente selecionada</p>
+            <h1><input id="front-name" class="hero-name" type="text" aria-label="Nome da frente"></h1>
+            <p id="front-desc"></p>
+            <div class="toolbar" style="margin-top:.9rem">
+              <button id="quick-task" class="btn">+ Captura rapida</button>
+              <button id="quick-asset" class="tiny">Importar PDF/imagem</button>
+              <button id="add-column" class="tiny">Nova coluna</button>
+            </div>
+          </div>
+          <div class="hero-side">
+            <div class="views">
+              <button class="view active" data-view="board">Quadro</button>
+              <button class="view" data-view="planning">Planejamento</button>
+              <button class="view" data-view="panorama">Panorama</button>
+              <button class="view" data-view="library">Biblioteca</button>
+            </div>
+            <div class="hero-panel">
               <div>
-                <p class="eyebrow">Saldo a receber</p>
-                <h3>Mural OTC</h3>
+                <p class="eyebrow">Leitura premium</p>
+                <strong id="hero-focus-title">Frente em destaque</strong>
+              </div>
+              <div class="hero-panel-grid">
+                <div class="hero-mini">
+                  <p class="eyebrow">Tipo</p>
+                  <span id="hero-type-copy">Estrategia</span>
+                </div>
+                <div class="hero-mini">
+                  <p class="eyebrow">Monetizacao</p>
+                  <span id="hero-revenue-copy">Modelo em definicao</span>
+                </div>
+                <div class="hero-mini">
+                  <p class="eyebrow">Marco</p>
+                  <span id="hero-milestone-copy">Sem marco definido</span>
+                </div>
+                <div class="hero-mini">
+                  <p class="eyebrow">Objetivo</p>
+                  <span id="hero-objective-copy">Definindo a proxima jogada</span>
+                </div>
               </div>
             </div>
-            <div id="receivableBoard" class="receivable-board"></div>
+          </div>
+        </div>
+        <div id="summary" class="summary"></div>
+      </section>
+
+      <section class="panel">
+        <div class="meta">
+          <div class="field"><label>Tipo de negocio</label><input id="front-type" type="text"></div>
+          <div class="field"><label>Objetivo central</label><input id="front-objective" type="text"></div>
+          <div class="field"><label>Monetizacao</label><input id="front-revenue" type="text"></div>
+          <div class="field"><label>Proximo marco</label><input id="front-milestone" type="text"></div>
+        </div>
+      </section>
+
+      <div id="board-view" class="board-shell">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <h2 class="section-title">Quadro de execucao</h2>
+              <p class="section-copy">Arraste os cards entre colunas ou abra cada um para editar prazo, prioridade e recorte.</p>
+            </div>
+          </div>
+          <div id="kanban" class="kanban"></div>
+        </section>
+
+        <section id="task-modal" class="panel hidden editor-shell">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" style="color:var(--muted)">Card de execucao</p>
+              <h2 id="task-modal-title" class="section-title">Nova tarefa</h2>
+            </div>
+            <button id="close-task" class="icon" type="button">x</button>
+          </div>
+          <form id="task-form">
+            <input id="task-id" type="hidden">
+            <input id="task-column" type="hidden">
+            <div class="editor-grid">
+              <div class="full"><label>Titulo</label><input id="task-title" required></div>
+              <div><label>Prioridade</label><select id="task-priority"><option value="urgente">Urgente</option><option value="alta">Alta</option><option value="normal" selected>Normal</option><option value="baixa">Baixa</option></select></div>
+              <div><label>Prazo</label><input id="task-due" type="date"></div>
+              <div class="full"><label>Recorte</label><input id="task-segment" placeholder="persona, privacy, servicos, produto, app exterior"></div>
+              <div class="full"><label>Notas</label><textarea id="task-notes"></textarea></div>
+            </div>
+            <div class="modal-actions" style="justify-content:space-between;margin-top:1rem">
+              <button id="delete-task" type="button" class="tiny" style="color:var(--danger);border-color:rgba(164,70,47,.24)">Excluir</button>
+              <div class="toolbar" style="margin-left:auto">
+                <button id="cancel-task" type="button" class="ghost" style="color:var(--ink);border-color:var(--line);background:rgba(255,255,255,.6)">Cancelar</button>
+                <button class="btn" type="submit">Salvar tarefa</button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <section id="planning-view" class="panel hidden">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Canvas de planejamento</h2>
+            <p class="section-copy">Cada bloco serve como caderno estrategico para varias frentes de negocio e planejamento.</p>
+          </div>
+        </div>
+        <div id="planning" class="planning"></div>
+      </section>
+
+      <section id="panorama-view" class="hidden">
+        <div class="panorama">
+          <div class="stack">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Radar da operacao</h2>
+                  <p class="section-copy">Leitura rapida do que esta aberto, urgente e perto de vencer.</p>
+                </div>
+              </div>
+              <div id="metrics" class="summary"></div>
+            </section>
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Prazos e foco</h2>
+                  <p class="section-copy">Itens criticos para puxar a semana sem perder direcao.</p>
+                </div>
+              </div>
+              <div id="deadlines" class="list"></div>
+            </section>
+          </div>
+          <div class="stack">
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Plano em movimento</h2>
+                  <p class="section-copy">O que ja esta coberto e o que ainda precisa ganhar definicao.</p>
+                </div>
+              </div>
+              <div id="plan-status" class="list"></div>
+            </section>
+            <section class="panel">
+              <div class="section-head">
+                <div>
+                  <h2 class="section-title">Pulso da semana</h2>
+                  <p class="section-copy">Mini diario operacional de aprendizados, riscos e proximos passos.</p>
+                </div>
+              </div>
+              <textarea id="weekly-pulse" placeholder="- O que travou&#10;- O que funcionou&#10;- Qual decisao precisa ser tomada agora"></textarea>
+            </section>
           </div>
         </div>
       </section>
 
-      <section class="workspace">
-        <div class="column column-wide">
-          <article id="clientSpotlight" class="spotlight"></article>
-
-          <section class="records-panel">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Registros</p>
-                <h3>Datas e saldos</h3>
-              </div>
-
-              <div class="filter-row">
-                <button class="filter-chip active" data-filter="all" type="button">Todos</button>
-                <button class="filter-chip" data-filter="pending" type="button">Pendentes</button>
-                <button class="filter-chip" data-filter="paid" type="button">Pagos</button>
-              </div>
-            </div>
-            <div id="recordList" class="record-list"></div>
-          </section>
+      <section id="library-view" class="panel hidden">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Biblioteca da frente</h2>
+            <p class="section-copy">Guarde PDFs, imagens, referencias e documentos locais desta frente. Tudo fica salvo neste navegador.</p>
+          </div>
         </div>
-
-        <div class="column column-side">
-          <section id="clientEditor" class="editor-panel">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Cliente</p>
-                <h3 id="clientFormTitle">Novo cliente</h3>
-              </div>
-              <button id="clearClientFormBtn" class="btn btn-ghost" type="button">Limpar</button>
+        <div class="library-shell">
+          <div class="upload-card">
+            <div class="upload-drop">
+              <p class="eyebrow" style="color:var(--muted)">Importacao local</p>
+              <strong>Adicionar PDF ou imagem</strong>
+              <small>Ideal para moodboards, contratos, prints, referencias visuais, rascunhos e documentos de apoio.</small>
             </div>
-
-            <form id="clientForm" class="form-stack">
-              <input id="clientId" type="hidden">
-
-              <label class="field">
-                <span>Nome do cliente</span>
-                <input id="clientName" type="text" placeholder="Ex.: Studio Aurora" required>
-              </label>
-
-              <div class="actions">
-                <button class="btn btn-primary" type="submit">Salvar cliente</button>
-                <button id="deleteClientBtn" class="btn btn-danger" type="button">Excluir</button>
-              </div>
-            </form>
-          </section>
-
-          <section id="recordEditor" class="editor-panel">
-            <div class="section-heading">
-              <div>
-                <p class="eyebrow">Saldo devedor</p>
-                <h3 id="recordFormTitle">Novo registro</h3>
-              </div>
-              <button id="clearRecordFormBtn" class="btn btn-ghost" type="button">Limpar</button>
+            <div class="field">
+              <label>Etiqueta opcional</label>
+              <input id="asset-label" type="text" placeholder="ex: referencia visual, contrato, funil exterior">
             </div>
-
-            <form id="recordForm" class="form-stack">
-              <input id="recordId" type="hidden">
-
-              <div class="grid two">
-                <label class="field">
-                  <span>Data</span>
-                  <input id="recordDate" type="date" required>
-                </label>
-
-                <label class="field">
-                  <span>Saldo devedor</span>
-                  <input id="recordValue" type="number" min="0" step="0.01" placeholder="0,00" required>
-                </label>
-              </div>
-
-              <label class="field check-field">
-                <span>Pago</span>
-                <input id="recordPaid" type="checkbox">
-              </label>
-
-              <div class="actions">
-                <button class="btn btn-primary" type="submit">Salvar registro</button>
-                <button id="deleteRecordBtn" class="btn btn-danger" type="button">Excluir</button>
-              </div>
-            </form>
-          </section>
+            <div class="field">
+              <label>Nota do arquivo</label>
+              <textarea id="asset-note" placeholder="- Por que este arquivo importa&#10;- O que precisa ser lembrado depois"></textarea>
+            </div>
+            <div class="toolbar">
+              <button id="pick-asset" class="btn" type="button">Importar arquivo</button>
+              <button id="clear-asset-meta" class="tiny" type="button">Limpar campos</button>
+            </div>
+          </div>
+          <div id="asset-list" class="asset-grid"></div>
         </div>
       </section>
     </main>
   </div>
 
-  <nav class="mobile-dock" aria-label="Atalhos mobile">
-    <button id="dockHomeBtn" class="dock-btn dock-btn-active" type="button">Painel</button>
-    <button id="dockClientBtn" class="dock-btn" type="button">Cliente</button>
-    <button id="dockRecordBtn" class="dock-btn" type="button">Saldo</button>
-    <button id="dockResetBtn" class="dock-btn" type="button">Resetar</button>
-  </nav>
-
-  <div id="toast" class="toast" aria-live="polite"></div>
-  <script src="./app.js"></script>
+  <input id="asset-file" type="file" accept="application/pdf,image/*" multiple class="hidden">
+  <button id="mobile-quick-task" class="mobile-fab" type="button">+ Nova tarefa</button>
+  <div id="toast" class="toast"></div>
+  <script>
+    const STORAGE_KEY="atlas_negocios_local_v1";
+    const FILE_DB_NAME="atlas_negocios_files_v1";
+    const FILE_STORE="attachments";
+    const PLAN_SECTIONS=[
+      ["production","Frentes de producao","Camera, personagem, gravacoes, roteiros, privacidade operacional e rotina de entrega."],
+      ["persona","Persona anonima","Nome, estetica, narrativa, blindagem da identidade real e tom publico."],
+      ["services","Servicos","O que pode ser vendido como atendimento, experiencia, curadoria ou sessao."],
+      ["products","Produtos","Produtos digitais, colecoes, assinatura, pacotes e ativos escalaveis."],
+      ["channels","Meios de divulgacao","Topo de funil, perfil de divulgacao, canais externos, comunidade e retencao."],
+      ["app","App exterior","MVP, pagamentos, operacao internacional, idioma, suporte e expansao."]
+    ];
+    const BASE_COLUMNS=[["Radar","#d4673b"],["Planejamento","#ba8d2c"],["Producao","#2d7d76"],["Teste","#7f4469"],["Operando","#5d6c31"]];
+    const $=s=>document.querySelector(s);
+    const $$=s=>[...document.querySelectorAll(s)];
+    const uid=()=>window.crypto?.randomUUID?.()||`id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const inDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+    const fmt=d=>d?d.split("-").reverse().join("/"):"Sem prazo";
+    const dueIn=d=>{if(!d)return Infinity;const a=new Date(),b=new Date(d);a.setHours(0,0,0,0);b.setHours(0,0,0,0);return Math.round((b-a)/86400000)};
+    const fileSize=n=>n>=1048576?`${(n/1048576).toFixed(1)} MB`:`${Math.max(1,Math.round(n/1024))} KB`;
+    const columns=()=>BASE_COLUMNS.map(([title,color])=>({id:uid(),title,color}));
+    let fileDbPromise=null,libraryToken=0,timer=null;
+    const objectUrls=new Map();
+    const openFileDb=()=>fileDbPromise||(fileDbPromise=new Promise((resolve,reject)=>{
+      const request=indexedDB.open(FILE_DB_NAME,1);
+      request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains(FILE_STORE)) request.result.createObjectStore(FILE_STORE)};
+      request.onsuccess=()=>resolve(request.result);
+      request.onerror=()=>reject(request.error||new Error("Nao foi possivel abrir o banco local de arquivos"));
+    }));
+    const withStore=(mode,runner)=>openFileDb().then(db=>new Promise((resolve,reject)=>{
+      const tx=db.transaction(FILE_STORE,mode);
+      const store=tx.objectStore(FILE_STORE);
+      const result=runner(store);
+      tx.oncomplete=()=>resolve(result?.result);
+      tx.onerror=()=>reject(tx.error||new Error("Falha ao acessar arquivos locais"));
+      tx.onabort=()=>reject(tx.error||new Error("Operacao local abortada"));
+    }));
+    const putBlob=(id,blob)=>withStore("readwrite",store=>store.put(blob,id));
+    const getBlob=id=>withStore("readonly",store=>store.get(id));
+    const deleteBlob=id=>withStore("readwrite",store=>store.delete(id));
+    const resetBlobStore=()=>withStore("readwrite",store=>store.clear());
+    const revokeObjectUrls=()=>{objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls.clear();};
+    const assetMarkup=(asset,url)=>`<article class="asset-card">
+      <div class="asset-preview">${(asset.type||"").startsWith("image/")&&url?`<img src="${url}" alt="${asset.name}">`:`<span class="asset-file-badge">${asset.type==="application/pdf"?"PDF":((asset.type||"arquivo").split("/")[1]||"ARQ").slice(0,4)}</span>`}</div>
+      <div class="asset-head">
+        <div>
+          <h3>${asset.name}</h3>
+          <div class="tags">
+            <span class="tag">${asset.label||"Arquivo"}</span>
+            <span class="tag">${fileSize(asset.size||0)}</span>
+            <span class="tag">${new Date(asset.addedAt).toLocaleDateString("pt-BR")}</span>
+          </div>
+        </div>
+      </div>
+      <div class="asset-meta">${asset.note?asset.note.replace(/\n/g,"<br>"):"Sem observacoes por enquanto."}</div>
+      <div class="asset-actions">
+        <button class="tiny" type="button" data-open-asset="${asset.id}">Abrir</button>
+        <button class="tiny" type="button" data-download-asset="${asset.id}">Baixar</button>
+        <button class="tiny" type="button" data-delete-asset="${asset.id}" style="color:var(--danger);border-color:rgba(239,68,68,.18)">Excluir</button>
+      </div>
+    </article>`;
+    const front=(seed={})=>{
+      const cols=columns(),map=Object.fromEntries(cols.map(c=>[c.title,c.id]));
+      return {
+        id:uid(),name:seed.name||"Nova frente",type:seed.type||"Estrategia em construcao",
+        objective:seed.objective||"Definir a prioridade que move essa frente agora.",revenue:seed.revenue||"",
+        milestone:seed.milestone||"",description:seed.description||"Frente criada para organizar tarefas, direcao e execucao.",
+        weeklyPulse:seed.weeklyPulse||"",columns:cols,attachments:Array.isArray(seed.attachments)?seed.attachments:[],
+        cards:(seed.cards||[]).map(card=>({id:uid(),columnId:map[card.column]||cols[0].id,title:card.title,notes:card.notes||"",priority:card.priority||"normal",due:card.due||"",segment:card.segment||""})),
+        plan:{
+          production:seed.plan?.production||"",persona:seed.plan?.persona||"",services:seed.plan?.services||"",
+          products:seed.plan?.products||"",channels:seed.plan?.channels||"",app:seed.plan?.app||""
+        }
+      };
+    };
+    const initial=()=>{
+      const fronts=[
+        front({
+          name:"Marca Anonima",type:"Conteudo premium + persona",
+          objective:"Fechar linguagem visual, blindagem de identidade e ritmo de gravacao.",
+          revenue:"Servicos premium, produtos digitais e recorrencia.",
+          milestone:"Subir perfil de divulgacao com narrativa pronta e primeiro lote de conteudo-base.",
+          description:"Esta frente reune camera, personagem, roteiros, privacidade e a logica publica da persona sem expor a identidade real.",
+          weeklyPulse:"- Ajustar assinatura visual da persona\\n- Fechar criterios de exposicao aceitavel\\n- Gravar 1 piloto curto com enquadramento seguro",
+          cards:[
+            {column:"Radar",title:"Definir limites entre vida real e persona publica",notes:"Escrever o que pode aparecer, o que nunca aparece e como responder perguntas pessoais.",priority:"urgente",due:inDays(2),segment:"privacy"},
+            {column:"Planejamento",title:"Montar kit de camera, luz e audio com setup recorrente",notes:"Pensar em ambiente, textura, posicao de camera e elementos recorrentes da personagem.",priority:"alta",due:inDays(4),segment:"producao"},
+            {column:"Producao",title:"Criar dois roteiros-base: gourmet e dominatrix",notes:"Separar tom, gatilho de curiosidade, ritmo e CTA suave para perfil de divulgacao.",priority:"alta",due:inDays(5),segment:"roteiros"},
+            {column:"Teste",title:"Testar bio, foto e nome da persona em perfil secundario",notes:"Observar se a imagem passa forca, misterio e consistencia com a proposta.",priority:"normal",due:inDays(7),segment:"persona"}
+          ],
+          plan:{
+            production:"- Camera com enquadramento seguro e linguagem propria\\n- Personagem com assinatura visual reconhecivel\\n- Rotina de gravacao por blocos\\n- Biblioteca de roteiros gourmet e dominatrix\\n- Checklist de privacy antes de publicar",
+            persona:"- Nome forte e memoravel\\n- Regras de voz: provocacao, autoridade e misterio\\n- Narrativa publica conhecida, porem anonima\\n- Manual de resposta para DMs e curiosos",
+            services:"- Experiencias personalizadas sob demanda\\n- Curadoria e roteiros privados com ticket maior\\n- Atendimento com filtros fortes",
+            products:"- Kits digitais tematicos\\n- Colecoes exclusivas\\n- Assinatura com drops planejados\\n- Produtos de entrada para qualificar interesse",
+            channels:"- Perfil de divulgacao separado do nucleo premium\\n- Conteudo teaser com CTA para canal principal\\n- Calendario de postagem\\n- Comunidade fechada como camada de retencao",
+            app:"- Registrar necessidades do futuro app desde ja\\n- Mapear idioma, onboarding, pagamentos e suporte internacional\\n- Guardar aprendizados da audiencia para virar requisito de MVP"
+          }
+        }),
+        front({
+          name:"Maquina de Divulgacao",type:"Aquisicao + presenca",
+          objective:"Criar perfis, canais e rotina de topo de funil com coerencia visual.",
+          revenue:"Aquisicao para produtos, servicos e recorrencia.",
+          milestone:"Sair com calendario, assinatura visual e primeira sequencia de posts/teasers.",
+          description:"Frente dedicada aos meios de divulgacao, crescimento de perfil e distribuicao da persona em camadas.",
+          weeklyPulse:"- Definir 3 pilares editoriais\\n- Escolher plataforma principal de aquisicao\\n- Testar 2 variacoes de bio e CTA",
+          cards:[
+            {column:"Radar",title:"Escolher plataforma principal de atracao",notes:"Decidir onde a persona vai ganhar visibilidade sem se diluir.",priority:"alta",due:inDays(3),segment:"canais"},
+            {column:"Planejamento",title:"Criar perfil de divulgacao com tom e paleta propria",notes:"Fechar avatar, bio, destaques, frases-gancho e estilo de legenda.",priority:"urgente",due:inDays(3),segment:"divulgacao"},
+            {column:"Producao",title:"Escrever 10 ideias de post com anonimato preservado",notes:"Misturar provocacao, bastidor controlado, frase curta e convite indireto.",priority:"normal",due:inDays(6),segment:"conteudo"},
+            {column:"Teste",title:"Testar canal de entrada para leads internacionais",notes:"Pode ser landing simples, formulario qualificador ou canal fechado.",priority:"alta",due:inDays(8),segment:"exterior"}
+          ],
+          plan:{
+            production:"- Producao orientada por calendario de distribuicao\\n- Banco de materiais curtos\\n- Conteudos modulares reaproveitaveis por canal",
+            persona:"- A persona precisa parecer viva e coerente em qualquer plataforma\\n- Mesmo misterio, mesma postura e mesma promessa\\n- Regras de exposicao por canal",
+            services:"- Mapear quais servicos podem ser divulgados abertamente\\n- Criar ofertas-ponte que facilitem conversao",
+            products:"- Produtos de entrada com CTA simples\\n- Ofertas que funcionem como filtro de publico",
+            channels:"- Perfil principal de divulgacao\\n- Canal de retencao fechado\\n- Sequencia de aquecimento por mensagens\\n- Testes em canais internacionais",
+            app:"- Usar divulgacao para validar demanda do futuro app\\n- Coletar duvidas recorrentes da audiencia estrangeira"
+          }
+        }),
+        front({
+          name:"App Exterior",type:"Produto digital internacional",
+          objective:"Desenhar MVP da app da dominatrix para mercado externo.",
+          revenue:"Assinatura em moeda forte, pacotes premium e add-ons.",
+          milestone:"Fechar estrutura do MVP, pagamento, idioma e fluxo inicial do usuario.",
+          description:"Frente de produto para exterior: posicionamento, MVP, estrutura tecnica, pagamento e operacao fora do Brasil.",
+          weeklyPulse:"- Priorizar qual problema o MVP resolve primeiro\\n- Fechar jornada de onboarding\\n- Pesquisar pagamentos internacionais e protecao operacional",
+          cards:[
+            {column:"Radar",title:"Definir tese do MVP para publico de fora",notes:"O app precisa resolver um desejo especifico e nao tentar abracar tudo no inicio.",priority:"urgente",due:inDays(4),segment:"mvp"},
+            {column:"Planejamento",title:"Mapear pagamento em USD e alternativas de protecao",notes:"Avaliar gateway, recorrencia, chargeback, moeda e suporte.",priority:"alta",due:inDays(7),segment:"pagamentos"},
+            {column:"Producao",title:"Desenhar fluxo de onboarding em ingles",notes:"Entrada, proposta de valor, regras, consentimento e primeira acao dentro da app.",priority:"alta",due:inDays(9),segment:"ux"},
+            {column:"Teste",title:"Escrever landing em ingles para validar interesse",notes:"Usar promessa enxuta, CTA de lista de espera e perguntas de qualificacao.",priority:"normal",due:inDays(10),segment:"validacao"}
+          ],
+          plan:{
+            production:"- Separar o que e conteudo de marca do que vira feature\\n- Definir backlog de MVP com poucos fluxos essenciais\\n- Organizar documentacao viva",
+            persona:"- A persona da app precisa conversar com o mercado internacional\\n- Tom em ingles com autoridade e clareza\\n- Blindagem da identidade tambem na camada produto",
+            services:"- Servicos premium como camada high-ticket do app\\n- Definir se entram como upsell, concierge ou area reservada",
+            products:"- Assinatura base\\n- Pacotes extras\\n- Biblioteca digital por tema\\n- Add-ons personalizados",
+            channels:"- Landing de espera para captar demanda externa\\n- Conteudo em ingles com CTA para lista\\n- Parcerias e distribuicao em plataformas compativeis",
+            app:"- MVP enxuto com onboarding, catalogo, pagamento e area segura\\n- Infra para moeda forte e suporte internacional\\n- Roadmap por fases: validar, converter, reter, expandir"
+          }
+        })
+      ];
+      return {fronts,activeFrontId:fronts[0].id,view:"board",updatedAt:new Date().toISOString()};
+    };
+    const normalizeState=parsed=>{
+      if(!parsed||!Array.isArray(parsed.fronts)||!parsed.fronts.length) return initial();
+      parsed.fronts=parsed.fronts.map(f=>({
+        ...f,
+        attachments:Array.isArray(f.attachments)?f.attachments.map(item=>({
+          id:item.id||uid(),
+          name:item.name||"Arquivo sem nome",
+          type:item.type||"application/octet-stream",
+          size:item.size||0,
+          label:item.label||"",
+          note:item.note||"",
+          addedAt:item.addedAt||new Date().toISOString()
+        })):[],
+        columns:Array.isArray(f.columns)&&f.columns.length?f.columns:columns(),
+        cards:Array.isArray(f.cards)?f.cards:[],
+        plan:{
+          production:f.plan?.production||"",
+          persona:f.plan?.persona||"",
+          services:f.plan?.services||"",
+          products:f.plan?.products||"",
+          channels:f.plan?.channels||"",
+          app:f.plan?.app||""
+        }
+      }));
+      parsed.view=["board","planning","panorama","library"].includes(parsed.view)?parsed.view:"board";
+      parsed.activeFrontId=parsed.fronts.find(f=>f.id===parsed.activeFrontId)?.id||parsed.fronts[0].id;
+      return parsed;
+    };
+    const load=()=>{try{const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return initial();return normalizeState(JSON.parse(raw))}catch{return initial()}};
+    let state=load(),dragId=null;
+    const active=()=>state.fronts.find(f=>f.id===state.activeFrontId)||state.fronts[0];
+    const save=(msg="Salvo localmente no navegador.")=>{state.updatedAt=new Date().toISOString();localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$("#save-text").textContent=`${msg} Ultima atualizacao as ${new Date(state.updatedAt).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}.`};
+    const toast=msg=>{const el=$("#toast");el.textContent=msg;el.classList.add("show");clearTimeout(timer);timer=setTimeout(()=>el.classList.remove("show"),1400)};
+    const openCards=f=>{const last=f.columns[f.columns.length-1]?.id;return f.cards.filter(c=>c.columnId!==last).length};
+    const moveFront=(fn,msg)=>{const f=active();if(!f)return;fn(f);save(msg);render()};
+    const view=v=>{state.view=v;$$(".view").forEach(b=>b.classList.toggle("active",b.dataset.view===v));$("#board-view").classList.toggle("hidden",v!=="board");$("#planning-view").classList.toggle("hidden",v!=="planning");$("#panorama-view").classList.toggle("hidden",v!=="panorama");$("#library-view").classList.toggle("hidden",v!=="library");save("Visual atualizado.")};
+    function renderFronts(){
+      $("#fronts").innerHTML=state.fronts.map(f=>`<div class="front"><button class="front-main ${f.id===state.activeFrontId?"active":""}" data-front="${f.id}"><span class="front-name">${f.name}</span><span class="front-row"><span>${f.type||"Sem tipo"}</span><span>${openCards(f)} abertas</span></span></button><button class="front-kill" data-kill="${f.id}" title="Excluir">x</button></div>`).join("");
+    }
+    function renderHero(){
+      const f=active();
+      $("#front-name").value=f.name||"";$("#front-type").value=f.type||"";$("#front-objective").value=f.objective||"";$("#front-revenue").value=f.revenue||"";$("#front-milestone").value=f.milestone||"";$("#front-desc").textContent=f.description||"Use este espaco para posicionar a frente.";
+      $("#hero-focus-title").textContent=f.name||"Frente em destaque";
+      $("#hero-type-copy").textContent=f.type||"Estrategia em construcao";
+      $("#hero-revenue-copy").textContent=f.revenue||"Modelo em definicao";
+      $("#hero-milestone-copy").textContent=f.milestone||"Sem marco definido";
+      $("#hero-objective-copy").textContent=f.objective||"Definindo a proxima jogada";
+      const soon=f.cards.filter(c=>dueIn(c.due)<=7).length,urgent=f.cards.filter(c=>c.priority==="urgente").length,files=(f.attachments||[]).length;
+      $("#summary").innerHTML=`<article class="metric"><label>Cards ativos</label><strong>${f.cards.length}</strong></article><article class="metric"><label>Abertos</label><strong>${openCards(f)}</strong></article><article class="metric"><label>Prazos em 7 dias</label><strong>${soon}</strong></article><article class="metric"><label>Biblioteca</label><strong>${files}</strong></article>`;
+    }
+    function renderKanban(){
+      const f=active();
+      $("#kanban").innerHTML=f.columns.map(col=>{
+        const cards=f.cards.filter(c=>c.columnId===col.id);
+        return `<section class="kanban-col" data-drop="${col.id}" style="--column-color:${col.color||"#d4673b"}"><div class="col-head"><input class="col-title" value="${col.title}" data-col-title="${col.id}"><input class="col-color" type="color" value="${col.color||"#d4673b"}" data-col-color="${col.id}"><span class="col-count">${cards.length}</span><button class="icon" data-add-card="${col.id}">+</button><button class="icon" data-del-col="${col.id}">x</button></div><div class="cards">${cards.length?cards.map(card=>`<article class="card" draggable="true" data-card="${card.id}" style="--column-color:${col.color||"#d4673b"}"><div class="card-top"><h3>${card.title}</h3><button class="icon" data-edit-card="${card.id}">E</button></div><p>${(card.notes||"Sem notas ainda.").replace(/\n/g,"<br>")}</p><div class="tags"><span class="tag ${card.priority||"normal"}">${card.priority||"normal"}</span>${card.segment?`<span class="tag">${card.segment}</span>`:""}${card.due?`<span class="tag">${fmt(card.due)}</span>`:""}</div></article>`).join(""):`<div class="empty">Nada aqui ainda. Use esta coluna para uma etapa do seu funil, producao ou operacao.</div>`}</div></section>`;
+      }).join("");
+    }
+    function renderPlanning(){
+      const f=active();
+      $("#planning").innerHTML=PLAN_SECTIONS.map(([key,title,copy])=>`<article class="plan-card"><h3>${title}</h3><p>${copy}</p><textarea data-plan="${key}" placeholder="- Que decisoes faltam&#10;- O que ja esta claro&#10;- Que risco precisa ser blindado">${f.plan[key]||""}</textarea></article>`).join("");
+    }
+    function renderPanorama(){
+      const f=active(),done=f.cards.length?Math.round(((f.cards.length-openCards(f))/f.cards.length)*100):0,high=f.cards.filter(c=>["urgente","alta"].includes(c.priority)).length;
+      $("#metrics").innerHTML=`<article class="metric"><label>Execucao total</label><strong>${f.cards.length}</strong></article><article class="metric"><label>Urgente + alta</label><strong>${high}</strong></article><article class="metric"><label>Conclusao</label><strong>${done}%</strong></article><article class="metric"><label>Colunas ativas</label><strong>${f.columns.length}</strong></article>`;
+      const dates=[...f.cards].filter(c=>c.due).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,6);
+      $("#deadlines").innerHTML=dates.length?dates.map(card=>{const days=dueIn(card.due);const status=days<0?"Atrasado":days===0?"Vence hoje":`Em ${days} dia(s)`;const col=f.columns.find(x=>x.id===card.columnId);return `<article class="list-item"><strong>${card.title}</strong><small>${status} - ${col?.title||"Sem coluna"} - ${card.segment||"Sem recorte"} - ${fmt(card.due)}</small></article>`}).join(""):`<article class="list-item"><strong>Sem prazos definidos</strong><small>Vale marcar pelo menos as prioridades criticas.</small></article>`;
+      $("#plan-status").innerHTML=PLAN_SECTIONS.map(([key,title])=>`<article class="list-item"><strong>${title}</strong><small>${(f.plan[key]||"").trim().length>18?"Coberto com notas e decisoes iniciais.":"Ainda esta leve. Vale detalhar este bloco para sustentar a operacao."}</small></article>`).join("");
+      $("#weekly-pulse").value=f.weeklyPulse||"";
+    }
+    async function renderLibrary(){
+      const token=++libraryToken;
+      const f=active();
+      const list=$("#asset-list");
+      revokeObjectUrls();
+      const items=[...(f.attachments||[])].sort((a,b)=>(b.addedAt||"").localeCompare(a.addedAt||""));
+      if(!items.length){
+        list.innerHTML=`<article class="asset-empty"><strong>Nenhum arquivo nesta frente ainda.</strong><br>Importe PDF ou imagem para guardar referencias, contratos, roteiros, prints e documentos de apoio.</article>`;
+        return;
+      }
+      const cards=await Promise.all(items.map(async asset=>{
+        let url="";
+        try{
+          const blob=await getBlob(asset.id);
+          if(blob){
+            url=URL.createObjectURL(blob);
+            objectUrls.set(asset.id,url);
+          }
+        }catch{}
+        return assetMarkup(asset,url);
+      }));
+      if(token!==libraryToken) return;
+      list.innerHTML=cards.join("");
+    }
+    async function render(){renderFronts();renderHero();renderKanban();renderPlanning();renderPanorama();await renderLibrary();view(state.view||"board")}
+    function promptFront(){
+      const name=window.prompt("Nome da nova frente:","Nova frente"); if(!name) return;
+      const type=window.prompt("Tipo de negocio:","Estrategia em construcao")||"";
+      const objective=window.prompt("Objetivo principal desta frente:","")||"";
+      state.fronts.unshift(front({name,type,objective,description:`Frente criada para ${name}.`})); state.activeFrontId=state.fronts[0].id; save("Frente criada."); render(); toast("Frente criada");
+    }
+    function promptColumn(){
+      const title=window.prompt("Nome da nova coluna:","Nova coluna"); if(!title) return;
+      const color=window.prompt("Cor hex da coluna:","#d4673b")||"#d4673b";
+      moveFront(f=>f.columns.push({id:uid(),title,color}),"Coluna criada."); toast("Coluna criada");
+    }
+    function showTask(columnId="",cardId=""){
+      const f=active(),card=f.cards.find(c=>c.id===cardId);
+      $("#task-modal-title").textContent=card?"Editar tarefa":"Nova tarefa";
+      $("#task-id").value=card?.id||"";$("#task-column").value=card?.columnId||columnId||f.columns[0]?.id||"";$("#task-title").value=card?.title||"";$("#task-priority").value=card?.priority||"normal";$("#task-due").value=card?.due||"";$("#task-segment").value=card?.segment||"";$("#task-notes").value=card?.notes||"";$("#delete-task").style.visibility=card?"visible":"hidden";
+      $("#task-modal").classList.remove("hidden");
+      $("#mobile-quick-task").classList.add("hidden");
+    }
+    function hideTask(){ $("#task-modal").classList.add("hidden"); $("#mobile-quick-task").classList.remove("hidden") }
+    $("#add-front").addEventListener("click",promptFront);
+    $("#add-column").addEventListener("click",promptColumn);
+    $("#quick-task").addEventListener("click",()=>showTask(active().columns[0]?.id));
+    $("#mobile-quick-task").addEventListener("click",()=>{view("board");showTask(active().columns[0]?.id);setTimeout(()=>$("#task-title")?.focus(),120)});
+    $("#quick-asset").addEventListener("click",()=>{state.view="library";render();setTimeout(()=>$("#asset-file").click(),80)});
+    $$(".view").forEach(b=>b.addEventListener("click",()=>view(b.dataset.view)));
+    $("#fronts").addEventListener("click",e=>{
+      const pick=e.target.closest("[data-front]"),kill=e.target.closest("[data-kill]");
+      if(pick){state.activeFrontId=pick.dataset.front; save("Frente selecionada."); render()}
+      if(kill){if(state.fronts.length===1) return toast("Mantenha pelo menos uma frente ativa"); state.fronts=state.fronts.filter(f=>f.id!==kill.dataset.kill); if(!state.fronts.find(f=>f.id===state.activeFrontId)) state.activeFrontId=state.fronts[0].id; save("Frente removida."); render(); toast("Frente removida")}
+    });
+    $("#kanban").addEventListener("click",e=>{
+      const add=e.target.closest("[data-add-card]"),edit=e.target.closest("[data-edit-card]"),del=e.target.closest("[data-del-col]");
+      if(add) showTask(add.dataset.addCard);
+      if(edit) showTask("",edit.dataset.editCard);
+      if(del){moveFront(f=>{if(f.columns.length<=1)return;const id=del.dataset.delCol,fallback=f.columns.find(c=>c.id!==id);f.cards=f.cards.map(c=>({...c,columnId:c.columnId===id?fallback.id:c.columnId}));f.columns=f.columns.filter(c=>c.id!==id)},"Coluna removida."); toast("Coluna removida")}
+    });
+    $("#kanban").addEventListener("input",e=>{
+      const title=e.target.closest("[data-col-title]"),color=e.target.closest("[data-col-color]");
+      if(title) moveFront(f=>{const col=f.columns.find(c=>c.id===title.dataset.colTitle); if(col) col.title=title.value},"Nome da coluna atualizado.");
+      if(color) moveFront(f=>{const col=f.columns.find(c=>c.id===color.dataset.colColor); if(col) col.color=color.value},"Cor da coluna atualizada.");
+    });
+    $("#kanban").addEventListener("dragstart",e=>{const card=e.target.closest("[data-card]"); if(!card) return; dragId=card.dataset.card; card.classList.add("drag")});
+    $("#kanban").addEventListener("dragend",e=>{const card=e.target.closest("[data-card]"); if(card) card.classList.remove("drag"); dragId=null; $$(".kanban-col").forEach(c=>c.classList.remove("target"))});
+    $("#kanban").addEventListener("dragover",e=>{const zone=e.target.closest("[data-drop]"); if(!zone) return; e.preventDefault(); $$(".kanban-col").forEach(c=>c.classList.toggle("target",c===zone))});
+    $("#kanban").addEventListener("drop",e=>{const zone=e.target.closest("[data-drop]"); if(!zone||!dragId) return; e.preventDefault(); moveFront(f=>{const card=f.cards.find(c=>c.id===dragId); if(card) card.columnId=zone.dataset.drop},"Card movido."); toast("Card movido")});
+    $("#planning").addEventListener("input",e=>{const area=e.target.closest("[data-plan]"); if(area) moveFront(f=>f.plan[area.dataset.plan]=area.value,"Planejamento atualizado.")});
+    $("#weekly-pulse").addEventListener("input",()=>moveFront(f=>f.weeklyPulse=$("#weekly-pulse").value,"Pulso semanal atualizado."));
+    [["name","#front-name"],["type","#front-type"],["objective","#front-objective"],["revenue","#front-revenue"],["milestone","#front-milestone"]].forEach(([field,sel])=>$(sel).addEventListener("input",()=>moveFront(f=>f[field]=$(sel).value,"Frente atualizada.")));
+    $("#pick-asset").addEventListener("click",()=>$("#asset-file").click());
+    $("#clear-asset-meta").addEventListener("click",()=>{$("#asset-label").value="";$("#asset-note").value=""});
+    $("#task-form").addEventListener("submit",e=>{
+      e.preventDefault();
+      const id=$("#task-id").value,data={title:$("#task-title").value.trim(),priority:$("#task-priority").value,due:$("#task-due").value,segment:$("#task-segment").value.trim(),notes:$("#task-notes").value.trim()};
+      if(!data.title) return;
+      moveFront(f=>{if(id){const card=f.cards.find(c=>c.id===id); if(card) Object.assign(card,data)} else f.cards.unshift({id:uid(),columnId:$("#task-column").value,...data})},id?"Tarefa atualizada.":"Tarefa criada.");
+      hideTask(); toast(id?"Tarefa atualizada":"Tarefa criada");
+    });
+    $("#delete-task").addEventListener("click",()=>{const id=$("#task-id").value; if(!id) return; moveFront(f=>f.cards=f.cards.filter(c=>c.id!==id),"Tarefa excluida."); hideTask(); toast("Tarefa excluida")});
+    $("#close-task").addEventListener("click",hideTask);
+    $("#cancel-task").addEventListener("click",hideTask);
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#task-modal").classList.contains("hidden")) hideTask()});
+    $("#export-json").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a"); a.href=url; a.download=`atlas-negocios-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); toast("Backup exportado")});
+    $("#import-json").addEventListener("click",()=>$("#import-file").click());
+    $("#import-file").addEventListener("change",async e=>{const file=e.target.files?.[0]; if(!file) return; try{const parsed=JSON.parse(await file.text()); if(!Array.isArray(parsed.fronts)||!parsed.fronts.length) throw new Error(); state=normalizeState(parsed); save("Backup importado."); await render(); toast("Backup importado")}catch{toast("Nao foi possivel importar este arquivo")} e.target.value=""});
+    $("#asset-file").addEventListener("change",async e=>{
+      const files=[...(e.target.files||[])];
+      if(!files.length) return;
+      const label=$("#asset-label").value.trim();
+      const note=$("#asset-note").value.trim();
+      const f=active();
+      f.attachments=Array.isArray(f.attachments)?f.attachments:[];
+      let imported=0;
+      try{
+        for(const file of files){
+          const isPdf=file.type==="application/pdf"||/\.pdf$/i.test(file.name);
+          const isImage=file.type.startsWith("image/");
+          if(!isPdf&&!isImage) continue;
+          const id=uid();
+          await putBlob(id,file);
+          f.attachments.unshift({id,name:file.name,type:file.type||(isPdf?"application/pdf":"application/octet-stream"),size:file.size||0,label:label||"",note:note||"",addedAt:new Date().toISOString()});
+          imported++;
+        }
+      }catch{
+        toast("Nao foi possivel salvar este arquivo localmente");
+        e.target.value="";
+        return;
+      }
+      if(!imported){toast("Use apenas PDF ou imagem");e.target.value="";return}
+      state.view="library";
+      save(imported>1?`${imported} arquivos importados.`:"Arquivo importado.");
+      await render();
+      toast(imported>1?`${imported} arquivos salvos`:"Arquivo salvo");
+      e.target.value="";
+    });
+    $("#asset-list").addEventListener("click",async e=>{
+      const openBtn=e.target.closest("[data-open-asset]"),downloadBtn=e.target.closest("[data-download-asset]"),deleteBtn=e.target.closest("[data-delete-asset]");
+      const assetId=openBtn?.dataset.openAsset||downloadBtn?.dataset.downloadAsset||deleteBtn?.dataset.deleteAsset;
+      if(!assetId) return;
+      const f=active(),asset=(f.attachments||[]).find(item=>item.id===assetId);
+      if(!asset) return;
+      if(deleteBtn){
+        f.attachments=f.attachments.filter(item=>item.id!==assetId);
+        await deleteBlob(assetId);
+        if(objectUrls.has(assetId)){URL.revokeObjectURL(objectUrls.get(assetId));objectUrls.delete(assetId)}
+        save("Arquivo removido.");
+        await render();
+        toast("Arquivo removido");
+        return;
+      }
+      const blob=await getBlob(assetId);
+      if(!blob){toast("Arquivo indisponivel neste navegador");return}
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.target=openBtn?"_blank":"";
+      a.rel="noopener";
+      a.download=asset.name;
+      if(openBtn) window.open(url,"_blank","noopener");
+      else a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1200);
+    });
+    $("#reset-all").addEventListener("click",async ()=>{if(!window.confirm("Isso vai apagar os dados locais deste dashboard. Deseja continuar?")) return; await resetBlobStore(); revokeObjectUrls(); state=initial(); save("Dashboard reiniciado."); await render(); toast("Dados resetados")});
+    render();
+  </script>
 </body>
 </html>
